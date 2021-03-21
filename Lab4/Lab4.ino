@@ -15,7 +15,13 @@
 #define LEDR PF_1
 #define LEDG PF_3
 #define LEDB PF_2
-uint8_t cont1;
+int cont1 = 0;
+int led1[] = {23,24,25,26};
+int band = 0;
+const int player1 = PUSH1;
+const int player2 = PUSH2;
+int state1 = 0;
+int state2 = 0;
 
 //see pins_energia.h for more LED definitions
 //#define LED GREEN_LED
@@ -27,14 +33,27 @@ void setup() {
   // initialize the digital pin as an output.
   pinMode(LEDR, OUTPUT);
   pinMode(LEDB, OUTPUT);
-  pinMode(LEDG, OUTPUT);     
-  cont1 = 0;
+  pinMode(LEDG, OUTPUT); 
+  pinMode (player1, INPUT_PULLUP);
+  pinMode (player2, INPUT_PULLUP);      
+  for (int i=0; i<4; i++){
+    pinMode(led1[i], OUTPUT);
+    }
   }
 
-// the loop routine runs over and over again forever:
 void loop() {
-  semaforo();
-
+  state1 = digitalRead(player1);
+  state2 = digitalRead(player2);
+  //semaforo();
+  if (state1 == LOW){
+    if (cont1 >= 4){
+      cont1 = 0;
+      }
+    cont1 ++;
+    digitalWrite(led1[cont1], HIGH);
+    delay(250);
+    digitalWrite(led1[cont1], LOW);
+    }
 }
 /// secuencia de semaforo
 
